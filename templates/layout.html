@@ -1,4 +1,6 @@
-{% load static %}
+{% load static helper_tags %}
+{% load_header_menu as header_menu %}
+{% load_footer_menu as footer_menu %}
 {% static '' as static_url %}
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +19,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <a class="navbar-brand" href="/">Start Bootstrap</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,19 +27,15 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
+                    <a class="nav-link" href="/">Anasayfa
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
+                {% for menu in header_menu %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pages:detail' menu.slug %}">{{ menu.title }}</a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -55,7 +53,14 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p>
+        <ul class="nav">
+            {% for menu in footer_menu %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">{{ menu.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
     <!-- /.container -->
 </footer>

@@ -43,3 +43,9 @@ class ArticleAdmin(admin.ModelAdmin):
     list_editable = [
         'is_active'
     ]
+
+    def get_queryset(self, request):
+        qs = super(ArticleAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user)

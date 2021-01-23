@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cropperjs.models import CropperImageField
 from ckeditor.fields import RichTextField
+from django.shortcuts import reverse
 
 
 class Category(models.Model):
@@ -54,7 +55,7 @@ class Article(models.Model):
     image = CropperImageField(
         null=False,
         blank=False,
-        aspectratio=1.7777,
+        aspectratio=2.433333333333333,
         verbose_name='Afiş'
     )
     category = models.ForeignKey(
@@ -86,7 +87,34 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    def get_url(self):
+        return reverse('articles:detail', args=[self.slug])
+
     class Meta:
         verbose_name = 'Makale'
         verbose_name_plural = 'Makaleler'
         ordering = ['-created_at']
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        related_name='article_to_comments',
+        null=False,
+        blank=False,
+        verbose_name='Makale'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user_to_comments',
+        null=False,
+        blank=False,
+        verbose_name='Yazar'
+    )
+    comment = models.TextField(
+        null=False,
+        blank=False,
+        verbose_name='Yorum'
+    )
