@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ page.title }}
+{% endblock title %}
+
+{% block body %}
+    <!-- Post Content Column -->
+    <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ page.title }}</h1>
+
+        <!-- Author -->
+        <p class="lead">
+            by
+            <a href="#">{{ page.author.get_full_name }}</a>
+        </p>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>{{ page.created_at }}</p>
+
+        <hr>
+
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="{{ page.image.url }}" alt="{{ page.title }}">
+
+        <hr>
+
+        <div class="mb-5">
+            {{ page.content|safe }}
+        </div>
+
+    </div>
+{% endblock body %}
