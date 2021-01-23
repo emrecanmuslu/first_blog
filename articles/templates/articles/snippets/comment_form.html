@@ -2,11 +2,24 @@
 <div class="card my-4">
     <h5 class="card-header">Leave a Comment:</h5>
     <div class="card-body">
-        <form method="POST">
-            <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        {% if article %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form method="POST" action="{% url 'articles:comment' article.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.comment }}
+                    {% if form.errors.comment %}
+                         {{ form.error.comment }}
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% endif %}
     </div>
 </div>

@@ -36,13 +36,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Dependency Apps
+    'cropperjs',
+    'ckeditor',
+    'debug_toolbar',
+
     # Our Apps
     'articles',
     'pages',
 
-    # Dependency Apps
-    'cropperjs',
-    'ckeditor'
+
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'first_blog.urls'
@@ -132,3 +136,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CKEDITOR_BASEPATH = "/assets/ckeditor/ckeditor/"
+
+INTERNAL_IPS = [
+    # '127.0.0.1',
+]

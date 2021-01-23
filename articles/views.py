@@ -1,13 +1,35 @@
-# from django.shortcuts import render, get_object_or_404
-from articles.models import Article, Category
-from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from articles.models import Article, Category, Comment
+from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import Q
+from django.shortcuts import reverse
+from articles.forms import CommentForm
+
+
+def article_comment_create(request, id):
+    article = get_object_or_404(Article, id=id)
+    form = CommentForm(request.POST, None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.article = article
+        obj.author = request.user
+        obj.save()
+        messages.success(request, 'Yorum eklendi.')
+
+    return redirect(reverse('articles:detail', args=[article.slug]))
 
 
 class ArticleDetailView(DetailView):
     template_name = 'articles/articles_detail.html'
     model = Article
-    queryset = model.objects.filter(is_active=True)
+    queryset = model.objects.prefetch_related('article_to_comments').filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).get_context_data()
+        context['form'] = CommentForm()
+
+        return context
 
 
 class SearchView(ListView):

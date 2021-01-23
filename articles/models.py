@@ -118,3 +118,15 @@ class Comment(models.Model):
         blank=False,
         verbose_name='Yorum'
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Yorum Tarihi'
+    )
+
+    def __str__(self):
+        return self.author.username
+
+    class Meta:
+        verbose_name = 'Yorum'
+        verbose_name_plural = 'Yorumlar'
+        ordering = ['-created_at']

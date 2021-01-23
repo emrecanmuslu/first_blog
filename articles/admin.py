@@ -1,5 +1,5 @@
 from django.contrib import admin
-from articles.models import Article, Category
+from articles.models import Article, Category, Comment
 
 
 @admin.register(Category)
@@ -14,8 +14,17 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',), }
 
 
+class CommentInline(admin.StackedInline):
+    model = Comment
+    extra = 0
+    classes = ['collapse']
+
+
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
+    inlines = [
+        CommentInline
+    ]
     list_display = [
         'title',
         'slug',
@@ -49,3 +58,12 @@ class ArticleAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(author=request.user)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = [
+        'article',
+        'author',
+        'created_at'
+    ]
